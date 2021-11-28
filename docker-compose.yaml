@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  modelv1:
+    build:
+      context: modelserver
+      target: colorization-siggraph
+    command: --model_path /opt/ml/ColorizationSig --model_name colorization --port 9001
+    restart: always
+  modelv2:
+    build:
+      context: modelserver
+      target: colorization-v2
+    command: --model_path /opt/ml/ColorizationV2 --model_name colorization --port 9001
+    restart: always
+  backend:
+    build: backend
+    environment:
+      - grpc_address_v1=modelv1
+      - grpc_address_v2=modelv2
+    ports:
+      - 8080:5000
+    restart: always
+  frontend:
+    build: frontend
+    ports:
+      - 3000:3000
+    restart: always

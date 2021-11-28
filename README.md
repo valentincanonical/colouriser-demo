@@ -31,8 +31,8 @@ Interface frontend <> OMS
 Serves the Colorization Model
 
 ```sh
-docker run --rm -it -p 9001:9001 colorisationv2:latest --model_path /opt/ml/ColorizationV2 --model_name colorization-v2 --port 9001
-# docker run --rm -it -p 9001:9001 colorisationsig:latest --model_path /opt/ml/ColorizationSig --model_name colorization-v2 --port 9001
+docker run --rm -it -p 9001:9001 colorisationv2:latest --model_path /opt/ml/ColorizationV2 --model_name colorization --port 9001
+# docker run --rm -it -p 9001:9001 colorisationsig:latest --model_path /opt/ml/ColorizationSig --model_name colorization --port 9001
 ```
 
 ### Front end
