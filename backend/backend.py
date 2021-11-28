@@ -13,7 +13,7 @@ CORS(api)
 @api.route('/colorize', methods=['POST'])
 def post_image(models={
     'v1': (os.getenv("grpc_address_v1", '127.0.0.1'), os.getenv("grpc_port_v1", '9001')),
-    'v2': (os.getenv("grpc_address_v2", '127.0.0.1'), os.getenv("grpc_port_v2", '9002'))
+    'v2': (os.getenv("grpc_address_v2", '127.0.0.1'), os.getenv("grpc_port_v2", '9001'))
 }):
     version = request.args.get('version')
     if version not in models:
