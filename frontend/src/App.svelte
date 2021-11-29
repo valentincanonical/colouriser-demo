@@ -52,7 +52,7 @@
 <div class="l-site">
   <main class="l-main">
     <div class="row">
-      <h1>Colorize!</h1>
+      <h1>Colourise!</h1>
     </div>
 
     <div class="row">
@@ -77,10 +77,10 @@
           <h2>Original</h2>
         </div>
         <div class="col-4">
-          <h2>Colorized V1</h2>
+          <h2>Colourised V1</h2>
         </div>
         <div class="col-4">
-          <h2>Colorized V2</h2>
+          <h2>Colourised V2</h2>
         </div>
       </div>
 
@@ -94,7 +94,7 @@
             <img
               class="result"
               src={images["color"+version]}
-              alt="Colorized result"
+              alt="Colourised result"
             />
           {:else if step[version] === STATUS.LOADING}
             <div class="loading">
