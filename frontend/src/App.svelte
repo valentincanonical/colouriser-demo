@@ -33,7 +33,7 @@
       '2': STATUS.LOADING
     }
 
-    const url = "http://localhost:8080/colorize";
+    const url = '/api/colorize';
 
     const onReceiveColoredImg = (version) => async (data) => {
       if (data.ok) {
