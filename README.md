@@ -13,7 +13,7 @@ For more stories and explanations, read the Ubuntu blog:
 
 Our architecture consists of three microservices: a backend, a frontend, and the OpenVINO Model Server to serve the neural network predictions. The Model Server component is deployed two times, as we will compare the results from two different neural networks (V1 and V2). All these components use the Ubuntu base image for a consistent software ecosystem and containerised environment.
 
-![Diagram of the microservices architecture deployed with Kubernetes.](./docs/img/openvino-ubuntu-coloriser-demo.drawio.png)
+![Diagram of the microservices architecture deployed with Kubernetes.](./docs/img/architecture-demo.drawio.png)
 
 ### Backend
 
