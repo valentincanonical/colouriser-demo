@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - env:
+            - name: grpc_address_v1
+              value: modelv1
+            - name: grpc_address_v2
+              value: modelv2
+          image: localhost:32000/backend:latest
+          name: backend
+          ports:
+            - containerPort: 5000
+      restartPolicy: Always

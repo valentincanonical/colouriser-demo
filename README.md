@@ -51,10 +51,15 @@ Setup [MicroK8s](https://microk8s.io/) to quickly get a Kubernetes cluster on yo
 ```sh
 # https://microk8s.io/docs
 sudo snap install microk8s --classic
-microk8s enable dns storage
+# Add current user ($USER) to the microk8s group
+sudo usermod -a -G microk8s $USER && sudo chown -f -R $USER ~/.kube && newgrp microk8s 
+# Enable the DNS, Storage, and Registry addons required later
+microk8s enable dns storage registry
+# Wait for the cluster to be in a Ready state
 microk8s status --wait-ready
+# Create an alias to enable the `kubectl` command
+sudo snap alias microk8s.kubectl kubectl
 ```
-<!-- TODO: test it -->
 
 ### Build the components' OCI images
 
@@ -62,11 +67,39 @@ Every [component](#Components) comes with a `Dockerfile` to build itself in a  s
 
 Before being able to deploy all our microservices with Kubernetes to run our colouriser app, we need to build the images and upload them to a registry accessible from our Kubernetes cluster.
 
-<!-- TODO -->
+#### Backend
+
+```sh
+docker build backend -t localhost:32000/backend:latest
+docker push localhost:32000/backend:latest
+```
+
+#### Model Server for both neural nets
+
+```sh
+# model V1 (SigGraph)
+docker build modelserver --target colorization-siggraph -t localhost:32000/modelv1:latest
+docker push localhost:32000/modelv1:latest
+# model V2
+docker build modelserver --target colorization-v2 -t localhost:32000/modelv2:latest
+docker push localhost:32000/modelv2:latest
+```
+
+#### Frontend
+
+```sh
+docker build frontend -t localhost:32000/frontend:latest
+docker push localhost:32000/frontend:latest
+```
 
 ### Deploy with Kubernetes
 
-<!-- TODO -->
+```sh
+kubectl apply -f k8s
+```
+
+That's it! Access the application at http://localhost:30000/.
+
 
 ## Deploy with Docker Compose
 
@@ -89,3 +122,5 @@ docker-compose up --build
 # rebuild a specific component (needs deploy)
 docker-compose build <component-name>
 ```
+
+Access the frontend at http://localhost:8000/ and the backend at http://localhost:8080/.

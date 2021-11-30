@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: modelv2
+  name: modelv2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modelv2
+  template:
+    metadata:
+      labels:
+        app: modelv2
+    spec:
+      containers:
+        - args:
+            - --model_path
+            - /opt/ml/ColorizationV2
+            - --model_name
+            - colorization
+            - --port
+            - "9001"
+          image: localhost:32000/modelv2:latest
+          name: modelv2
+          ports:
+            - containerPort: 9001
+      restartPolicy: Always
