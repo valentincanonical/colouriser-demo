@@ -29,8 +29,8 @@
     };
 
     const colorizeVersion = async (version) =>
-      // fetch(`/api/colorize?version=${version}`, {
-      fetch(`http://localhost:8080/colorize?version=${version}`, {
+      fetch(`/api/colorize?version=${version}`, {
+        // fetch(`http://localhost:8080/colorize?version=${version}`, {
         method: "POST",
         body,
       }).then(onReceiveColoredImg(version));
