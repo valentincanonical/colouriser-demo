@@ -1,51 +1,42 @@
 <script>
   import { Plane } from "svelte-loading-spinners";
+  import Slider from "@bulatdashiev/svelte-slider";
 
-  const STATUS = {
-    INITIAL_STATE: 0,
-    LOADING: 1,
-    LOADED: 2,
-    ERROR: 3,
-  };
+  const headers = ["Original", "Colourised V1", "Colourised V2"];
+  const versions = ["origin", "v1", "v2"];
+  let data = undefined;
 
-  let step = {
-      '1': STATUS.INITIAL_STATE,
-      '2': STATUS.INITIAL_STATE
-    }
-
-  let images = {};
-
-  const setImage = (name, image) => {
+  const setImage = (version, blob) => {
     let reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onload = (e) => (images[name] = e.target.result);
+    reader.readAsDataURL(blob);
+    reader.onload = (e) => (data[version].image = e.target.result);
   };
 
   const onFileSelected = async (e) => {
     let image = e.target.files[0];
-    setImage("bn", image);
+    data = { v1: {}, v2: {}, origin: {} };
+    setImage("origin", image);
 
     let body = new FormData();
     body.append("image", image);
 
-    step = {
-      '1': STATUS.LOADING,
-      '2': STATUS.LOADING
-    }
+    const onReceiveColoredImg = (version) => async (result) => {
+      if (result.ok) {
+        const blob = await result.blob();
+        setImage(version, blob);
+        data[version].saturation = [100];
+      } else data[version].error = true;
+    };
 
-    const url = '/api/colorize';
+    const colorizeVersion = async (version) =>
+      // fetch(`/api/colorize?version=${version}`, {
+      fetch(`http://localhost:8080/colorize?version=${version}`, {
+        method: "POST",
+        body,
+      }).then(onReceiveColoredImg(version));
 
-    const onReceiveColoredImg = (version) => async (data) => {
-      if (data.ok) {
-        const blob = await data.blob();
-        setImage("color"+version, blob);
-        step[version] = STATUS.LOADED;
-      } else step[version] = STATUS.ERROR;
-    }
-
-    fetch(`${url}?version=v1`, { method: "POST", body }).then(onReceiveColoredImg('1'))
-    fetch(`${url}?version=v2`, { method: "POST", body }).then(onReceiveColoredImg('2'))
-
+    colorizeVersion("v1");
+    colorizeVersion("v2");
   };
 </script>
 
@@ -65,46 +56,49 @@
       </div>
     </div>
 
-    {#if step['1'] === STATUS.INITIAL_STATE}
+    {#if !data}
       <div class="row">
         <div class="col-12">
-          <h3>Choose your black and white image!</h3>
+          <h3>Start by selecting a black and white picture.</h3>
         </div>
       </div>
     {:else}
       <div class="row">
-        <div class="col-4">
-          <h2>Original</h2>
-        </div>
-        <div class="col-4">
-          <h2>Colourised V1</h2>
-        </div>
-        <div class="col-4">
-          <h2>Colourised V2</h2>
-        </div>
+        {#each headers as header}
+          <div class="col-4">
+            <h2>{header}</h2>
+          </div>
+        {/each}
       </div>
-
       <div class="row images">
-        <div class="col-4">
-          <img class="result" src={images["bn"]} alt="B/W original" />
-        </div>
-        {#each ['1','2'] as version}
-        <div class="col-4">
-          {#if step[version] === STATUS.LOADED}
-            <img
-              class="result"
-              src={images["color"+version]}
-              alt="Colourised result"
-            />
-          {:else if step[version] === STATUS.LOADING}
-            <div class="loading">
-              <p>Loading</p>
-              <Plane size="60" color="#FF3E00" unit="px" duration="1s" />
-            </div>
-          {:else if step[version] === STATUS.ERROR}
-            ERROR getting version {version}
-          {/if}
-        </div>
+        {#each versions as version}
+          <div class="col-4">
+            {#if !!data[version].image}
+              <img
+                class="result"
+                src={data[version].image}
+                alt={version}
+                style="filter: saturate({data[version].saturation | 100}%);"
+              />
+            {:else if !!data[version].error}
+              <p>
+                Error getting version {version}
+              </p>
+            {:else}
+              <div class="loading">
+                <Plane size="60" color="#FF3E00" unit="px" duration="1s" />
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </div>
+      <div class="row">
+        {#each versions as version}
+          <div class="col-4 slider">
+            {#if !!data[version].saturation}
+              <Slider max="300" bind:value={data[version].saturation} />
+            {/if}
+          </div>
         {/each}
       </div>
     {/if}
@@ -123,6 +117,13 @@
   h1 {
     font-size: 4em;
     font-weight: 100;
+    margin-top: 24px;
+  }
+
+  input {
+    padding: 32px;
+    border: 2px dotted lightgray;
+    margin: 8px;
   }
 
   .row {
@@ -136,5 +137,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .row div.slider {
+    --thumb-bg: #d33601;
+    --progress-bg: #ff3e00;
   }
 </style>
