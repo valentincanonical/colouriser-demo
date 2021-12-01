@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: modelv1
-  name: modelv1
+    app: modelserver
+  name: modelserver
 spec:
   ports:
     - name: grpc
       port: 9001
       targetPort: 9001
   selector:
-    app: modelv1
+    app: modelserver

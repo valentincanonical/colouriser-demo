@@ -17,8 +17,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /app/
 COPY . .
 
-ENV grpc_address=127.0.0.1
-ENV grpc_port=9001
+ENV GRPC_ADDRESS=127.0.0.1
+ENV GRPC_PORT=9001
 
 ENTRYPOINT [ "/opt/venv/bin/python3" ]
 CMD [ "backend.py" ]

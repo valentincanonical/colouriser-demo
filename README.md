@@ -11,7 +11,7 @@ For more stories and explanations, read the Ubuntu blog:
 
 ## Components 
 
-Our architecture consists of three microservices: a backend, a frontend, and the OpenVINO Model Server to serve the neural network predictions. The Model Server component is deployed two times, as we will compare the results from two different neural networks (V1 and V2). All these components use the Ubuntu base image for a consistent software ecosystem and containerised environment.
+Our architecture consists of three microservices: a backend, a frontend, and the OpenVINO Model Server to serve the neural network predictions. The Model Server component will serve two different demo neural networks to compare the results (V1 and V2). All these components use the Ubuntu base image for a consistent software ecosystem and containerised environment.
 
 ![Diagram of the microservices architecture deployed with Kubernetes.](./docs/img/architecture-demo.drawio.png)
 
@@ -27,9 +27,9 @@ Serves the Colorization Model
 You can try it alone running
 ```sh
 # Build the image
-docker build modelserver --target colorization-v2 -t colorizationv2:latest
+docker build modelserver -t modelserver:latest
 # Deploy locally with Docker
-docker run --rm -it -p 8001:8001 -p 9001:9001 colorizationv2:latest --model_path /opt/ml/ColorizationV2 --model_name colorization --port 9001 --rest_port 8001
+docker run --rm -it -p 8001:8001 -p 9001:9001 modelserver:latest --config_path /models_config.json --port 9001 --rest_port 8001
 # The REST API is available at http://localhost:8001/
 # read more on https://docs.openvino.ai/
 ```
@@ -77,12 +77,8 @@ docker push localhost:32000/backend:latest
 #### Model Server for both neural nets
 
 ```sh
-# model V1 (SigGraph)
-docker build modelserver --target colorization-siggraph -t localhost:32000/modelv1:latest
-docker push localhost:32000/modelv1:latest
-# model V2
-docker build modelserver --target colorization-v2 -t localhost:32000/modelv2:latest
-docker push localhost:32000/modelv2:latest
+docker build modelserver -t localhost:32000/modelserver:latest
+docker push localhost:32000/modelserver:latest
 ```
 
 #### Frontend

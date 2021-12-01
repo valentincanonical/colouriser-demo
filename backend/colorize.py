@@ -1,7 +1,10 @@
+import os 
+
 import cv2 as cv
 import grpc
 import numpy as np
 import tensorflow as tf
+
 from tensorflow import make_ndarray, make_tensor_proto
 from tensorflow_serving.apis import predict_pb2, prediction_service_pb2_grpc
 
@@ -18,14 +21,14 @@ def convert_to_bytes(open_cv_img):
     return buffer.tobytes()
 
 
-def connect_grpc_model(model):
-    address = "{}:{}".format(model[0], model[1])
+def connect_grpc_model(address=os.getenv("GRPC_ADDRESS", '127.0.0.1'), port=os.getenv("GRPC_PORT", '9001')):
+    address = "{}:{}".format(address, port)
     channel = grpc.insecure_channel(address)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
     return stub
 
 
-def prep_model_input(remote_model, model_name='colorization'):
+def prep_model_input(remote_model, model_name):
     input_metadata, _ = get_model_metadata(remote_model, model_name)
     request = predict_pb2.PredictRequest()
     request.model_spec.name = model_name
@@ -59,13 +62,13 @@ def predict_result(request, remote_model):
     return update_res.transpose((1, 2, 0))
 
 
-def colorize_image(file, model):
+def colorize_image(file, model_name):
     original_frame = convert_to_opencv(file)
     (h_orig, w_orig) = original_frame.shape[:2]
 
     # connect to the remote AI/ML model
-    remote_model = connect_grpc_model(model)
-    (request, input_shape) = prep_model_input(remote_model)
+    remote_model = connect_grpc_model()
+    (request, input_shape) = prep_model_input(remote_model, model_name)
 
     # transform image to grayscale LAB and input size
     h_in, w_in = input_shape[2:4]
