@@ -139,6 +139,10 @@
     align-items: center;
   }
 
+  img {
+    width: 100%;
+  }
+
   .row div.slider {
     --thumb-bg: #d33601;
     --progress-bg: #ff3e00;
