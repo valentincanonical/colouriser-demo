@@ -78,7 +78,7 @@
                 class="result"
                 src={data[version].image}
                 alt={version}
-                style="filter: saturate({data[version].saturation | 100}%);"
+                style="filter: saturate({data[version].saturation ?? 100}%);"
               />
             {:else if !!data[version].error}
               <p>
