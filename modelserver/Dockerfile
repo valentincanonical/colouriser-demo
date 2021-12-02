@@ -11,7 +11,7 @@ RUN $TOOLS/downloader.py --list models.lst -o /home/openvino/models
 # Convert the models to the OpenVINO Model Server format
 RUN $TOOLS/converter.py --list models.lst -d /home/openvino/models -o /home/openvino/models --precisions FP32
 
-# Use multi stage build to rebase our final image on the lighter OpenVINO Model Server (OMS)
+# Use multi stage build to rebase our final image on the lighter OpenVINO Model Server (OVMS)
 FROM openvino/model_server:latest
 
 # Copying the V1 model files 

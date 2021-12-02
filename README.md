@@ -17,7 +17,7 @@ Our architecture consists of three microservices: a backend, a frontend, and the
 
 ### Backend
 
-Interface frontend <> OMS
+Interface frontend <> OVMS
 <!-- TODO -->
 
 ### Model Server
