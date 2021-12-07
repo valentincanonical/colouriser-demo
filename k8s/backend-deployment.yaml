@@ -17,7 +17,7 @@ spec:
       containers:
         - env:
             - name: GRPC_ADDRESS
-              value: modelserver
+              value: modelserver.default
           image: localhost:32000/backend:latest
           name: backend
           ports:
