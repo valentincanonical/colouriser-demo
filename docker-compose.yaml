@@ -2,12 +2,15 @@ version: '3.8'
 services:
   modelserver:
     build: modelserver
+    hostname: modelserver.svc
     command: --config_path /models_config.json --port 9001
     restart: always
+    ports:
+      - 9001:9001
   backend:
     build: backend
     environment:
-      - GRPC_ADDRESS=modelserver
+      - GRPC_ADDRESS=modelserver.svc
       - GRPC_PORT=9001
     ports:
       - 8080:5000
