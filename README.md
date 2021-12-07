@@ -1,7 +1,7 @@
 # Colourising black and white images with OpenVINO on Ubuntu demo
 ... [deployed](#Kubernetes-deployment) on MicroK8s!
 
-![Colouriser app demo with the famous Einstein stucking his tongue out picture.](./docs/img/colourise-app-browser-einstein.png)
+![Colouriser app demo with a cat picture colourised.](./docs/img/colourise-app-browser-cat.png)
 
 The READMEs in this repository are aimed to be technical and help you get started quickly.    
 For more stories and explanations, read the Ubuntu blog:
@@ -13,7 +13,7 @@ For more stories and explanations, read the Ubuntu blog:
 
 Our architecture consists of three microservices: a backend, a frontend, and the OpenVINO Model Server to serve the neural network predictions. The Model Server component will serve two different demo neural networks to compare the results (V1 and V2). All these components use the Ubuntu base image for a consistent software ecosystem and containerised environment.
 
-![Diagram of the microservices architecture deployed with Kubernetes.](./docs/img/architecture-demo.drawio.png)
+![Diagram of the microservices architecture deployed with Kubernetes and demo with the famous Einstein stucking his tongue out picture.](./docs/img/architecture-demo.drawio.png)
 
 ### Backend
 
