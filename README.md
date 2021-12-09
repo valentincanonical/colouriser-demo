@@ -6,8 +6,8 @@
 The READMEs in this repository are aimed to be technical and help you get started quickly.    
 For more stories and explanations, read the Ubuntu blog:
 1. [Intel and Canonical to secure containers software supply chain](https://ubuntu.com/blog/secure-containers-supply-chain-intel-openvino-canonical) (Intro)
- 2. [How to colourise black & white pictures: OpenVINO™ on Ubuntu containers demo (Part 1)](https://ubuntu.com/blog/how-to-colourise-black-white-pictures-openvino-containers-part-1) (Architecture)
-<!-- 3. []() (How to) TODO: blog #2 -->
+2. [How to colourise black & white pictures: OpenVINO™ on Ubuntu containers demo (Part 1)](https://ubuntu.com/blog/how-to-colourise-black-white-pictures-openvino-containers-part-1) (Architecture)
+3. [How to colourise black & white pictures with OpenVINO™ on Ubuntu containers (Part 2)](https://ubuntu.com/blog/how-to-colourise-black-white-pictures-openvino-containers-part-2) (How to)
 
 ## Components 
 
@@ -18,7 +18,6 @@ Our architecture consists of three microservices: a backend, a frontend, and the
 ### Backend
 
 Interface frontend <> OVMS
-<!-- TODO -->
 
 ### Model Server
 
@@ -33,12 +32,10 @@ docker run --rm -it -p 8001:8001 -p 9001:9001 modelserver:latest --config_path /
 # The REST API is available at http://localhost:8001/
 # read more on https://docs.openvino.ai/
 ```
-<!-- TODO -->
 
 ### Front end
 
 A sweet interface to try the demo colourisation neural networks!
-<!-- TODO -->
 
 ## Kubernetes deployment
 
