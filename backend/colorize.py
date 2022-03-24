@@ -26,7 +26,7 @@ def prep_model_input(model_metadata):
 
 
 def transform_to_grayscale(original_frame):
-    if original_frame.shape[2] > 1:
+    if len(original_frame.shape) == 3 and original_frame.shape[2] > 1:
         return cv.cvtColor(cv.cvtColor(
             original_frame, cv.COLOR_BGR2GRAY), cv.COLOR_GRAY2RGB)
     return cv.cvtColor(original_frame, cv.COLOR_GRAY2RGB)
