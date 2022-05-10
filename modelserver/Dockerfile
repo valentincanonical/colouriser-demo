@@ -1,5 +1,5 @@
 # Use the OpenVINO Toolkit development image that contains all required scripts and deps
-FROM openvino/ubuntu20_dev AS omz
+FROM openvino/ubuntu20_dev:2021.4.2 AS omz
 
 # Change dir for the colorization model demo
 WORKDIR /opt/intel/openvino_2021.4.752/deployment_tools/open_model_zoo/demos/colorization_demo/python
